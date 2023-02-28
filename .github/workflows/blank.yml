@@ -1,0 +1,52 @@
+import UIKit
+import SpriteKit
+
+class GameViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Create the scene
+        let scene = GameScene(size: view.bounds.size)
+
+        // Configure the view
+        let skView = view as! SKView
+        skView.showsFPS = true
+        skView.showsNodeCount = true
+        skView.ignoresSiblingOrder = true
+
+        // Present the scene
+        scene.scaleMode = .resizeFill
+        skView.presentScene(scene)
+    }
+}
+
+class GameScene: SKScene {
+
+    let player = SKSpriteNode(imageNamed: "player")
+
+    override func didMove(to view: SKView) {
+        // Set up the player
+        player.position = CGPoint(x: size.width/2, y: player.size.height/2)
+        addChild(player)
+
+        // Set up the physics world
+        physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
+        physicsWorld.contactDelegate = self
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Move the player based on the touch location
+        for touch in touches {
+            let location = touch.location(in: self)
+            player.position.x = location.x
+        }
+    }
+}
+
+extension GameScene: SKPhysicsContactDelegate {
+    // Handle contact between objects
+    func didBegin(_ contact: SKPhysicsContact) {
+        // Handle collision between objects
+    }
+}
